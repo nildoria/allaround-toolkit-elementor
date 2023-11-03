@@ -79,7 +79,6 @@ protected function register_controls() {
             foreach ($selected_products as $product_id) {
                 $product = wc_get_product($product_id);
                 
-                // Retrieve additional metadata (product_icon and product_short_name).
                 $icon_id = get_post_meta($product_id, 'product_icon', true );
                 $thumb_url = ! empty( $icon_id ) ? wp_get_attachment_image_url( $icon_id, 'full' ) : get_the_post_thumbnail_url( $product_id, 'full' );
                 $product_short_name = get_post_meta($product_id, 'product_short_name', true);
@@ -96,7 +95,6 @@ protected function register_controls() {
                 } else {
                     echo '<h5>' . $product->get_title() . '</h5>';
                 }
-                
                 echo '</a>';
             }
             echo '</div>';
