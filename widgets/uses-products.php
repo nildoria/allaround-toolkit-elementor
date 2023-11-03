@@ -30,39 +30,45 @@ class Uses_Products extends Widget_Base
     }
     
 
-    protected function register_controls() {
+protected function register_controls() {
+    $options = array();
 
-        $options = array();
+    // Query WooCommerce products
+    $product_args = array(
+        'post_type' => 'product',
+        'posts_per_page' => -1, // Retrieve all products
+    );
 
-        $posts = get_posts( array(
-            'post_type'  => 'product'
-        ) );
+    $products = get_posts($product_args);
 
-        foreach ( $posts as $key => $post ) {
-            $options[$post->ID] = get_the_title($post->ID);
+    if ($products) {
+        foreach ($products as $product) {
+            $options[$product->ID] = get_the_title($product->ID);
         }
-		$this->start_controls_section(
-			'section_content',
-			[
-				'label' => esc_html__( 'Content', 'allaround-addons' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-        $this->add_control(
-            'selected_products',
-            [
-                'label' => __('Select Products', 'allaround-addons'),
-                'type' => \Elementor\Controls_Manager::SELECT2,
-                'label_block' => true,
-                'multiple' => true,
-                'options' => $options,
-            ]
-        );
-
-        $this->end_controls_section();
-
     }
+
+    $this->start_controls_section(
+        'section_content',
+        [
+            'label' => esc_html__('Content', 'allaround-addons'),
+            'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+        ]
+    );
+
+    $this->add_control(
+        'selected_products',
+        [
+            'label' => __('Select Products', 'allaround-addons'),
+            'type' => \Elementor\Controls_Manager::SELECT2,
+            'label_block' => true,
+            'multiple' => true,
+            'options' => $options,
+        ]
+    );
+
+    $this->end_controls_section();
+}
+
 
     protected function render() {
         $settings = $this->get_settings_for_display();
