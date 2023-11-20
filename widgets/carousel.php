@@ -109,10 +109,12 @@ class Carousel extends Widget_Base
 			// $email = get_post_meta( get_the_ID(), 'email', true );
 			// $avatar = get_post_meta( get_the_ID(), 'avatar', true );
 			$thumb = get_post_meta( get_the_ID(), 'review_thumb', true );
+			$thumb_url = !empty($thumb) ? wp_get_attachment_image_src($thumb, 'large', true) : '';
+
 
 			// $user_email = ! empty( $email ) ? $email : null;
 			// $gravatar = ! empty( $avatar ) ? '<img src="'.wp_get_attachment_url( (int) $avatar ).'"/>' : get_avatar( $user_email, 100, 'mystery' );
-			$review_thumb = ! empty( $thumb ) ? '<a href="'.wp_get_attachment_url( (int) $thumb ).'"><img src="'.wp_get_attachment_url( (int) $thumb ).'"/></a>' : '<img src="'.get_template_directory_uri() . '/assets/images/icon-placeholder.png'.'"/>';
+			$review_thumb = ! empty( $thumb_url ) ? '<a href="'.wp_get_attachment_url( (int) $thumb ).'"><img src="'. esc_url($thumb_url[0]) .'"/></a>' : '<img src="'.get_template_directory_uri() . '/assets/images/icon-placeholder.png'.'"/>';
 			$user_name = ! empty( $name ) ? $name : esc_html__('Anonymous', 'hello-elementor');
 
 
