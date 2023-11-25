@@ -11,7 +11,7 @@ class Carousel_List extends Widget_Base
 
     public function get_name()
     {
-        return 'ala-carousel';
+        return 'ala-carousel-list';
     }
 
     public function get_title()
@@ -21,12 +21,16 @@ class Carousel_List extends Widget_Base
 
     public function get_categories()
     {
-        return array('basic');
+        return array('allaroundwidget');
     }
 
     public function get_icon()
     {
-        return 'eicon-carousel';
+        return 'eicon-allaround-icon';
+    }
+
+    public function get_style_depends() {
+        return array( 'my-custom-widget-style' );
     }
 
 	protected function register_controls() {
@@ -81,14 +85,40 @@ class Carousel_List extends Widget_Base
 			]
 		);
 
+		$this->add_control(
+            'show_navigation',
+            [
+                'label' => __('Show Navigation', 'allaround-addons'),
+                'type' => Controls_Manager::SWITCHER,
+            	'label_on' => esc_html__( 'Yes', 'allaround-addons' ),
+            	'label_off' => esc_html__( 'No', 'allaround-addons' ),
+            	'return_value' => 'yes',
+            	'default' => 'no',
+            ]
+        );
+
+		$this->add_control(
+            'show_pagination',
+            [
+                'label' => __('Show Pagination', 'allaround-addons'),
+                'type' => Controls_Manager::SWITCHER,
+            	'label_on' => esc_html__( 'Yes', 'allaround-addons' ),
+            	'label_off' => esc_html__( 'No', 'allaround-addons' ),
+            	'return_value' => 'yes',
+            	'default' => 'yes',
+            ]
+        );
+
 		$this->end_controls_section();
 
 	}
 
 	protected function render() {
 		$settings = $this->get_settings_for_display();
+		$navigation = $settings['show_navigation'];
+		// $pagination = $settings['show_pagination'];
 		?>
-		<div class="al-carousel-container swiper-container">
+		<div class="al-carousel-list-container swiper-container">
 		<div class="swiper-wrapper">
 		<?php foreach ( $settings['list'] as $index => $item ) : ?>
 			<div class="carousel-item swiper-slide">
@@ -98,43 +128,56 @@ class Carousel_List extends Widget_Base
 	                echo wp_get_attachment_image( $item['image']['id'], 'medium' );
 					echo $item['text'];
 				} else {
-					?><a href="<?php echo esc_url( $item['link']['url'] ); ?>"><?php echo wp_get_attachment_image( $item['image']['id'], 'medium' );?><span class="carousel-item_text"><?php echo $item['text']; ?></span></a><?php
+					?><a class="alCarouselList-url" href="<?php echo esc_url( $item['link']['url'] ); ?>"><?php echo wp_get_attachment_image( $item['image']['id'], 'medium' );?><span class="carousel-item_text"><?php echo $item['text']; ?></span></a><?php
 				}
 				?>
 			</div>
 		<?php endforeach; ?>
 		</div>
+		<?php if( !empty( $pagination ) ) : ?>
 		<div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+		<?php endif; ?>
+		<?php if( !empty( $navigation ) ) : ?>
+        <div class="list-swiper-button-prev"></div>
+        <div class="list-swiper-button-next"></div>
+		<?php endif; ?>
 		</div>
 		<script>
-            jQuery(document).ready(function() {
+            jQuery(document).ready(function($) {
             // Swiper: Slider
-                new Swiper('.al-carousel-container', {
+                var swiperList = new Swiper('.al-carousel-list-container', {
                     loop: true,
         			pagination: {
-        				el: '.swiper-pagination',
+        				el: '.swiper-pagination1',
         				clickable: true,
         			},
         			navigation: {
-        				nextEl: '.swiper-button-next',
-        				prevEl: '.swiper-button-prev',
+        				nextEl: '.list-swiper-button-next',
+        				prevEl: '.list-swiper-button-prev',
         			},
-                    slidesPerView: 3,
+                    slidesPerView: 4,
                     paginationClickable: true,
-                    spaceBetween: 15,
+                    spaceBetween: 10,
+                    autoplay: 
+                    {
+                      delay: 2500,
+                    },
+		            direction: 'horizontal',
                     breakpoints: {
                         1920: {
                             slidesPerView: 4,
-                            spaceBetween: 30
+                            spaceBetween: 10
                         },
                         1028: {
-                            slidesPerView: 3,
-                            spaceBetween: 30
+                            slidesPerView: 4,
+                            spaceBetween: 10
                         },
-                        480: {
-                            slidesPerView: 1,
+                        767: {
+                            slidesPerView: 3,
+                            spaceBetween: 10
+                        },
+                        150: {
+                            slidesPerView: 2,
                             spaceBetween: 10
                         }
                     }
@@ -143,7 +186,5 @@ class Carousel_List extends Widget_Base
 		</script>
 		<?php
 	}
-
-
 
 }

@@ -154,7 +154,7 @@ class Carousel extends Widget_Base
 		<script>
             jQuery(document).ready(function() {
             // Swiper: Slider
-                new Swiper('.al-carousel-container', {
+                var swiperReview = new Swiper('.al-carousel-container', {
                     loop: true,
         			pagination: {
         				el: '.swiper-pagination',

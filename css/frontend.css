@@ -68,10 +68,61 @@
     min-height: 400px;
 }
 
-
 /* END Review Slider CSS */
 
-
+/* Carousel List CSS */
+.list-swiper-button-next,
+.list-swiper-button-prev {
+  position: absolute;
+  top: 50%;
+  width: 27px;
+  height: 44px;
+  margin-top: -22px;
+  z-index: 10;
+  cursor: pointer;
+  background-size: 27px 44px;
+  background: no-repeat 50%;
+}
+.al-carousel-list-container .list-swiper-button-next,
+.al-carousel-list-container .list-swiper-button-prev {
+  background-image: url("../images/listcarouselArrow.svg");
+  right: 0px;
+  left: auto;
+}
+.al-carousel-list-container .list-swiper-button-next {
+  transform: rotate(180deg);
+  right: auto;
+  left: 0px;
+}
+.al-carousel-list-container .list-swiper-button-next::after,
+.swiper-container-rtl.al-carousel-list-container
+  .list-swiper-button-prev::after,
+.al-carousel-list-container .list-swiper-button-prev::after,
+.swiper-container-rtl.al-carousel-list-container
+  .list-swiper-button-next::after {
+  content: none;
+}
+.al-carousel-list-container .carousel-item img {
+  max-width: 125px;
+  max-height: 125px;
+}
+.al-carousel-list-container .carousel-item a.alCarouselList-url {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.al-carousel-list-container
+  .carousel-item
+  a.alCarouselList-url
+  span.carousel-item_text {
+  font-family: "Heebo", Sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-top: 20px;
+}
+/* END Carousel List CSS */
 
 
 

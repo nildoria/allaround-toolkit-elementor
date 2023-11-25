@@ -3,7 +3,7 @@
 /**
  * Plugin Name: AllAround Toolkit
  * Description: Custom element added to Elementor
- * Version: 0.0.1
+ * Version: 1.0.1
  * Author: msumon
  * Author URI: http://themepaw.com
  * Text Domain: elementor-custom-element
@@ -26,16 +26,16 @@ final class AllAround_Extension {
 	/**
 	 * Plugin Version
 	 *
-	 * @since 1.0.0
+	 * @since 1.0.1
 	 *
 	 * @var string The plugin version.
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '1.0.2';
 
 	/**
 	 * Minimum Elementor Version
 	 *
-	 * @since 1.0.0
+	 * @since 1.0.1
 	 *
 	 * @var string Minimum Elementor version required to run the plugin.
 	 */
@@ -118,7 +118,7 @@ final class AllAround_Extension {
 	 *
 	 * Fired by `plugins_loaded` action hook.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0.1
 	 *
 	 * @access public
 	 */
