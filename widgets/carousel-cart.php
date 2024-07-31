@@ -7,17 +7,17 @@ use \Elementor\Controls_Manager;
 if (!defined('ABSPATH'))
 	exit; // Exit if accessed directly
 
-class Carousel_List extends Widget_Base
+class Carousel_Cart extends Widget_Base
 {
 
 	public function get_name()
 	{
-		return 'ala-carousel-list';
+		return 'ala-carousel-cart';
 	}
 
 	public function get_title()
 	{
-		return __('Carousel Slider List', 'allaround-addons');
+		return __('Carousel for Cart', 'allaround-addons');
 	}
 
 	public function get_categories()
@@ -120,39 +120,46 @@ class Carousel_List extends Widget_Base
 	{
 		$settings = $this->get_settings_for_display();
 		$navigation = $settings['show_navigation'];
-		// $pagination = $settings['show_pagination'];
+		$pagination = $settings['show_pagination'];
 		?>
-		<div class="al-carousel-list-container swiper-container">
+		<div class="al-carousel-list-container alrnd-carousel-cart swiper-container">
 			<div class="swiper-wrapper">
 				<?php foreach ($settings['list'] as $index => $item): ?>
 					<div class="carousel-item swiper-slide">
 						<?php
 						if (!$item['link']['url']) {
 							// Get image by id
-							echo wp_get_attachment_image($item['image']['id'], 'medium');
-							echo $item['text'];
+							echo '<a class="alCarouselList-url" href="#">';
+							echo '<div class="alCarouselImg">' . wp_get_attachment_image($item['image']['id'], 'medium') . '</div>';
+							echo '<span class="carousel-item_text">' . $item['text'] . '</span>';
+							echo '</a>';
 						} else {
-							?><a class="alCarouselList-url"
-								href="<?php echo esc_url($item['link']['url']); ?>"><?php echo wp_get_attachment_image($item['image']['id'], 'medium'); ?><span
-									class="carousel-item_text"><?php echo $item['text']; ?></span></a><?php
+							?>
+							<a class="alCarouselList-url" href="<?php echo esc_url($item['link']['url']); ?>">
+								<div class="alCarouselImg">
+									<?php echo wp_get_attachment_image($item['image']['id'], 'medium'); ?>
+								</div>
+								<span class="carousel-item_text"><?php echo $item['text']; ?></span>
+							</a>
+							<?php
 						}
 						?>
 					</div>
 				<?php endforeach; ?>
 			</div>
-			<?php if (!empty($pagination)): ?>
-				<div class="swiper-pagination"></div>
-			<?php endif; ?>
 			<?php if (!empty($navigation)): ?>
 				<div class="list-swiper-button-prev"></div>
 				<div class="list-swiper-button-next"></div>
+			<?php endif; ?>
+			<?php if (!empty($pagination)): ?>
+				<div class="swiper-pagination"></div>
 			<?php endif; ?>
 		</div>
 		<script>
 			jQuery(document).ready(function ($) {
 				// Swiper: Slider
 				var swiperList = new Swiper('.al-carousel-list-container', {
-					loop: true,
+					loop: false,
 					pagination: {
 						el: '.swiper-pagination1',
 						clickable: true,
@@ -161,27 +168,27 @@ class Carousel_List extends Widget_Base
 						nextEl: '.list-swiper-button-next',
 						prevEl: '.list-swiper-button-prev',
 					},
-					slidesPerView: 4,
+					slidesPerView: 6,
 					paginationClickable: true,
-					spaceBetween: 10,
-					autoplay:
-					{
-						delay: 2500,
-						disableOnInteraction: true,
-						reverseDirection: true,
-					},
+					spaceBetween: 20,
+					// autoplay:
+					// {
+					// 	delay: 2500,
+					// 	disableOnInteraction: true,
+					// 	reverseDirection: true,
+					// },
 					direction: 'horizontal',
 					breakpoints: {
 						1920: {
-							slidesPerView: 4,
-							spaceBetween: 10
+							slidesPerView: 6,
+							spaceBetween: 20
 						},
 						1028: {
-							slidesPerView: 4,
-							spaceBetween: 10
+							slidesPerView: 5,
+							spaceBetween: 20
 						},
 						767: {
-							slidesPerView: 3,
+							slidesPerView: 4,
 							spaceBetween: 10
 						},
 						150: {

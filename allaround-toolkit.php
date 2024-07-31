@@ -3,14 +3,14 @@
 /**
  * Plugin Name: AllAround Toolkit
  * Description: Custom element added to Elementor
- * Version: 1.0.1
+ * Version: 1.0.5
  * Author: msumon
  * Author URI: http://themepaw.com
  * Text Domain: elementor-custom-element
  */
 
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
@@ -21,7 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-final class AllAround_Extension {
+final class AllAround_Extension
+{
 
 	/**
 	 * Plugin Version
@@ -47,7 +48,7 @@ final class AllAround_Extension {
 	 * @since 1.0.0
 	 *
 	 * @var string Minimum PHP version required to run the plugin.
-	*/
+	 */
 	const MINIMUM_PHP_VERSION = '6.0';
 
 	/**
@@ -74,13 +75,14 @@ final class AllAround_Extension {
 	 *
 	 * @return Globalasst_Extension An instance of the class.
 	 */
-	public static function instance() {
+	public static function instance()
+	{
 
-		if ( is_null( self::$_instance ) ) {
+		if (is_null(self::$_instance)) {
 			self::$_instance = new self();
 		}
 
-		 return self::$_instance;
+		return self::$_instance;
 	}
 
 	/**
@@ -90,10 +92,11 @@ final class AllAround_Extension {
 	 *
 	 * @access public
 	 */
-	
-	public function __construct() {	
-		add_action( 'init', [ $this, 'i18n' ] );
-		add_action( 'plugins_loaded', [ $this, 'init' ] );
+
+	public function __construct()
+	{
+		add_action('init', [$this, 'i18n']);
+		add_action('plugins_loaded', [$this, 'init']);
 	}
 
 	/**
@@ -107,7 +110,9 @@ final class AllAround_Extension {
 	 *
 	 * @access public
 	 */
-	public function i18n(){}
+	public function i18n()
+	{
+	}
 
 	/**
 	 * Initialize the plugin
@@ -122,67 +127,71 @@ final class AllAround_Extension {
 	 *
 	 * @access public
 	 */
-	public function init() {
+	public function init()
+	{
 
 		// Check if Elementor installed and activated
-		if ( ! did_action( 'elementor/loaded' ) ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_missing_main_plugin' ] );
+		if (!did_action('elementor/loaded')) {
+			add_action('admin_notices', [$this, 'admin_notice_missing_main_plugin']);
 			return;
 		}
 
 		// Check for required Elementor version			
-		if ( ! version_compare( ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=' ) ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_minimum_elementor_version' ] );
+		if (!version_compare(ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=')) {
+			add_action('admin_notices', [$this, 'admin_notice_minimum_elementor_version']);
 			return;
 		}
 
 		// Check for required PHP version
-		if ( version_compare( PHP_VERSION, self::MINIMUM_PHP_VERSION, '<' ) ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_minimum_php_version' ] );
+		if (version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '<')) {
+			add_action('admin_notices', [$this, 'admin_notice_minimum_php_version']);
 			return;
 		}
 
 		// Add Plugin actions
-		add_action( 'elementor/widgets/widgets_registered', [ $this, 'init_widgets' ] );
-		add_action( 'elementor/controls/controls_registered', [ $this, 'init_controls' ] );
-        add_action( 'elementor/init', array( $this, 'add_elementor_category' ) );
-		
+		add_action('elementor/widgets/widgets_registered', [$this, 'init_widgets']);
+		add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
+		add_action('elementor/init', array($this, 'add_elementor_category'));
+
 		// Register Widget Styles
-		add_action( 'wp_enqueue_scripts', [ $this, 'frontend_styles',  ], 10 );
-		add_action( 'elementor/frontend/after_enqueue_styles', [ $this, 'el_frontend_styles' ], 40 );
-		add_action( 'elementor/editor/after_enqueue_styles', [ $this, 'widget_styles' ] );
+		add_action('wp_enqueue_scripts', [$this, 'frontend_styles',], 10);
+		add_action('elementor/frontend/after_enqueue_styles', [$this, 'el_frontend_styles'], 40);
+		add_action('elementor/editor/after_enqueue_styles', [$this, 'widget_styles']);
 
 	}
 
-    public function add_elementor_category()
-        {
-            \Elementor\Plugin::instance()->elements_manager->add_category( 'allaroundwidget', array(
-                'title' => __( 'AllAround Widgets', 'themepaw-companion' ),
-                'icon'  => 'allaround_icon',
-            ), 10 );
-        }
-
-	public function widget_styles() {
-		//For Example
-		wp_enqueue_style( 'allaround-widgets', plugins_url( '/css/widgets.css', __FILE__ ) );
+	public function add_elementor_category()
+	{
+		\Elementor\Plugin::instance()->elements_manager->add_category('allaroundwidget', array(
+			'title' => __('AllAround Widgets', 'themepaw-companion'),
+			'icon' => 'allaround_icon',
+		), 10);
 	}
 
-	public function frontend_styles() {
+	public function widget_styles()
+	{
 		//For Example
-		wp_register_style( 'allaround-frontend', plugins_url( '/css/frontend.css', __FILE__ ) );
-		wp_enqueue_style( 'swiper_css', 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.8.4/swiper-bundle.min.css', array() );
+		wp_enqueue_style('allaround-widgets', plugins_url('/css/widgets.css', __FILE__));
+	}
+
+	public function frontend_styles()
+	{
+		//For Example
+		wp_register_style('allaround-frontend', plugins_url('/css/frontend.css', __FILE__));
+		wp_enqueue_style('swiper_css', 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.8.4/swiper-bundle.min.css', array());
 		wp_enqueue_script('swiper-script', 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.8.4/swiper-bundle.min.js', array('jquery'), '6.8.4', true);
 	}
-	
+
 	/**
 	 * Elementor hook to load frontend styles
 	 *
 	 * @return void
 	 */
-	public function el_frontend_styles() {
-		wp_enqueue_style( 'allaround-frontend' );
+	public function el_frontend_styles()
+	{
+		wp_enqueue_style('allaround-frontend');
 	}
-	
+
 	/**
 	 * Admin notice
 	 *
@@ -192,18 +201,20 @@ final class AllAround_Extension {
 	 *
 	 * @access public
 	 */
-	public function admin_notice_missing_main_plugin() {
+	public function admin_notice_missing_main_plugin()
+	{
 
-		if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		if (isset($_GET['activate']))
+			unset($_GET['activate']);
 
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: Elementor */
-			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'globalasst' ),
-			'<strong>' . esc_html__( 'AllAround Widgets', 'globalasst' ) . '</strong>',
-			'<strong>' . esc_html__( 'Elementor', 'globalasst' ) . '</strong>'
-		);		
+			esc_html__('"%1$s" requires "%2$s" to be installed and activated.', 'globalasst'),
+			'<strong>' . esc_html__('AllAround Widgets', 'globalasst') . '</strong>',
+			'<strong>' . esc_html__('Elementor', 'globalasst') . '</strong>'
+		);
 
-		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
 
 	}
 
@@ -216,19 +227,21 @@ final class AllAround_Extension {
 	 *
 	 * @access public
 	 */
-	public function admin_notice_minimum_elementor_version() {
+	public function admin_notice_minimum_elementor_version()
+	{
 
-		if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		if (isset($_GET['activate']))
+			unset($_GET['activate']);
 
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
-			esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'globalasst' ),
-			'<strong>' . esc_html__( 'AllAround Widgets', 'globalasst' ) . '</strong>',
-			'<strong>' . esc_html__( 'Elementor', 'globalasst' ) . '</strong>',
+			esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'globalasst'),
+			'<strong>' . esc_html__('AllAround Widgets', 'globalasst') . '</strong>',
+			'<strong>' . esc_html__('Elementor', 'globalasst') . '</strong>',
 			self::MINIMUM_ELEMENTOR_VERSION
 		);
 
-		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
 
 	}
 
@@ -241,19 +254,21 @@ final class AllAround_Extension {
 	 *
 	 * @access public
 	 */
-	public function admin_notice_minimum_php_version() {		
+	public function admin_notice_minimum_php_version()
+	{
 
-		if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		if (isset($_GET['activate']))
+			unset($_GET['activate']);
 
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: PHP 3: Required PHP version */
-			esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'globalasst' ),
-			'<strong>' . esc_html__( 'AllAround Widgets', 'globalasst' ) . '</strong>',
-			'<strong>' . esc_html__( 'PHP', 'globalasst' ) . '</strong>',
+			esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'globalasst'),
+			'<strong>' . esc_html__('AllAround Widgets', 'globalasst') . '</strong>',
+			'<strong>' . esc_html__('PHP', 'globalasst') . '</strong>',
 			self::MINIMUM_PHP_VERSION
 		);
 
-		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
 
 	}
 
@@ -266,27 +281,30 @@ final class AllAround_Extension {
 	 *
 	 * @access public
 	 */
-	public function init_widgets() {
-		 // For Example
+	public function init_widgets()
+	{
+		// For Example
 		// Include Widget files
-		require_once( __DIR__ . '/widgets/category.php' );
-		require_once( __DIR__ . '/widgets/review.php' );
-		require_once( __DIR__ . '/widgets/menucart.php' );
-		require_once( __DIR__ . '/widgets/readmore.php' );
-		require_once( __DIR__ . '/widgets/carousel-list.php' );
-		require_once( __DIR__ . '/widgets/search.php' );
-		require_once( __DIR__ . '/widgets/carousel.php' );
-		require_once( __DIR__ . '/widgets/uses-products.php' );
+		require_once (__DIR__ . '/widgets/category.php');
+		require_once (__DIR__ . '/widgets/review.php');
+		require_once (__DIR__ . '/widgets/menucart.php');
+		require_once (__DIR__ . '/widgets/readmore.php');
+		require_once (__DIR__ . '/widgets/carousel-list.php');
+		require_once (__DIR__ . '/widgets/carousel-cart.php');
+		require_once (__DIR__ . '/widgets/search.php');
+		require_once (__DIR__ . '/widgets/carousel.php');
+		require_once (__DIR__ . '/widgets/uses-products.php');
 
 		// Register widget
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \GlobalAssistant\Review() );
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \GlobalAssistant\Product_category() );
-    	\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \GlobalAssistant\Menu_Cart() );
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \GlobalAssistant\Read_More() );
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \GlobalAssistant\Carousel_List() );
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \GlobalAssistant\Search() );
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \GlobalAssistant\Carousel() );
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \GlobalAssistant\Uses_Products() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Review());
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Product_category());
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Menu_Cart());
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Read_More());
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Carousel_List());
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Carousel_Cart());
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Search());
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Carousel());
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \GlobalAssistant\Uses_Products());
 
 	}
 
@@ -298,10 +316,11 @@ final class AllAround_Extension {
 	 * @since 1.0.0				
 	 *
 	 * @access public
-	*/
-	public function init_controls() {
+	 */
+	public function init_controls()
+	{
 		//For example
-		
+
 		//Include Control files
 		//require_once( __DIR__ . '/controls/multi-unit.php' );
 
